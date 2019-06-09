@@ -1,4 +1,5 @@
-﻿using IdentityServer4.Models;
+﻿using IdentityServer4;
+using IdentityServer4.Models;
 using IdentityServer4.Test;
 using System;
 using System.Collections.Generic;
@@ -54,7 +55,32 @@ namespace PDK.IDP.Setting
 
         public static IEnumerable<Client> GetClients()
         {
-            return new List<Client>();
+            return new List<Client>
+            {
+                new Client
+                {
+                    ClientName = "PDK Catering",
+                    ClientId = "pdk-catering",
+                    AllowedGrantTypes = GrantTypes.Hybrid,
+                    RedirectUris = new List<string>
+                    {
+                        "http://localhost:58329/signin-oidc"
+                    },
+                    PostLogoutRedirectUris = new List<string>
+                    {
+                        "http://localhost:58329/signout-callback-oidc"
+                    },
+                    AllowedScopes =
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile
+                    },
+                    ClientSecrets =
+                    {
+                        new Secret("secret".Sha256())
+                    }
+                }
+             };
         }
     }
 }
